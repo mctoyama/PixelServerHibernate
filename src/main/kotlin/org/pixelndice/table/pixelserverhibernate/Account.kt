@@ -14,6 +14,10 @@ import kotlin.experimental.or
 import kotlin.experimental.xor
 
 @Entity
+@NamedQueries(
+        NamedQuery(name="accountById",
+                   query="FROM Account WHERE id = :id")
+)
 class Account{
 
     @Id

@@ -1,11 +1,26 @@
 package org.pixelndice.table.pixelserverhibernate
 
+import org.hibernate.annotations.NamedQueries
+import org.hibernate.annotations.NamedQuery
+
 import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.*
 
-
 @Entity
+
+@NamedQueries(
+        NamedQuery(name="deleteDuplicatedGame",
+                   query="delete from Game where hostname = :hostname and port = :port"),
+        NamedQuery(name="refreshGame",
+                   query="from Game where refresh <= :now"),
+        NamedQuery(name="selectGameForPlayer",
+                   query="SELECT game FROM Game as game INNER JOIN game.players as players WHERE players.id = :player_id"),
+        NamedQuery(name="gameByUUID",
+                   query="from Game where uuid = :uuid"),
+        NamedQuery(name="deleteGameByUUID",
+                   query="delete Game where uuid = :uuid")
+)
 class Game{
 
     fun constructor(){}
@@ -21,7 +36,8 @@ class Game{
     var campaign: String = ""
 
     @Column(nullable = false)
-    var rpg: String = ""
+    @Enumerated(EnumType.STRING)
+    var rpgGameSystem: RPGGameSystem = RPGGameSystem.GENERIC
 
     @ManyToMany
     var players = mutableSetOf<Account>()

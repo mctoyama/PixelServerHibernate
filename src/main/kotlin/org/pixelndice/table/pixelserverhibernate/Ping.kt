@@ -1,10 +1,19 @@
 package org.pixelndice.table.pixelserverhibernate
 
+
+import org.hibernate.annotations.NamedQueries
+import org.hibernate.annotations.NamedQuery
 import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.*
 
 @Entity
+@NamedQueries(
+        NamedQuery(name = "expiredPing",
+                   query = "from Ping where expire <= :now"),
+        NamedQuery(name = "refreshPing",
+                   query = "from Ping where refresh <= :now")
+)
 class Ping{
 
     fun constructor(){}
@@ -20,7 +29,8 @@ class Ping{
     var campaign: String = ""
 
     @Column(nullable = false)
-    var rpg: String = ""
+    @Enumerated(EnumType.STRING)
+    var rpgGameSystem: RPGGameSystem = RPGGameSystem.GENERIC
 
     @ManyToMany
     var players = mutableSetOf<Account>()
