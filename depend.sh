@@ -1,5 +1,6 @@
 #!/bin/bash
 
-rm libs/pixelprotocol-1.0-SNAPSHOT.jar
+rm -rf libs
+mkdir libs
 
 cp ../PixelProtocol/build/libs/pixelprotocol-1.0-SNAPSHOT.jar  libs
